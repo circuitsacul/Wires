@@ -1,0 +1,35 @@
+[tool.mypy]
+strict = true
+
+[tool.ruff]
+extend-select = ["I"]
+
+[tool.poetry]
+name = "wires"
+version = "0.1.0"
+description = "A bot with random features I want"
+authors = ["CircuitSacul <circuitsacul@icloud.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+app = "wires.main:run_app"
+create-migrations = "wires.main:create_migrations"
+apply-migrations = "wires.main:apply_migrations"
+
+[tool.poetry.dependencies]
+python = "^3.11,<3.12"
+hikari = "^2.0.0.dev117"
+hikari-crescent = "^0.6.0"
+apgorm = "^1.0.0b14"
+python-dotenv = "^1.0.0"
+hikari-flare = "^0.1.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.1.1"
+ruff = "^0.0.259"
+black = "^23.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,2 @@
+# limits
+MAX_HIGHLIGHT_LENGTH = 500
