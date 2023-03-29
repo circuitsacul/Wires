@@ -62,7 +62,7 @@ async def highlight_view_msg(
         guild_id = create.guild_id
 
     highlights = await Highlight.fetchmany(user_id=user_id, guild_id=guild_id)
-    create = create.set_disabled(len(highlights) >= constants.MAX_HIGHLIGHTS_PER_USER)
+    create.set_disabled(len(highlights) >= constants.MAX_HIGHLIGHTS_PER_USER)
     select.set_options(
         *(
             hikari.SelectMenuOption(
