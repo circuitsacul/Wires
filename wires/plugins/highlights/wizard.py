@@ -9,7 +9,7 @@ from wires import constants
 from wires.database.models import Highlight, User
 from wires.utils import clip, unwrap
 
-from . import Plugin
+from .. import Plugin
 
 plugin = Plugin()
 
@@ -27,6 +27,13 @@ async def highlight_view_msg(
     current: int | None,
     message: hikari.Message | None,
 ) -> dict[str, t.Any]:
+    if current:
+        hl = await Highlight.exists(id=current)
+        if not hl:
+            current = None
+    else:
+        hl = None
+
     if not message:
         assert user_id
         select = SelectHighlight(current)
@@ -34,19 +41,20 @@ async def highlight_view_msg(
     else:
         select = t.cast(
             "SelectHighlight",
-            await SelectHighlight.from_partial(message.components[1].components[0]),
+            await SelectHighlight.from_partial(message.components[0].components[0]),
         )
         select.current = current
 
         create = t.cast(
             "CreateHighlightButton",
             await CreateHighlightButton.from_partial(
-                message.components[0].components[0]
+                message.components[1].components[0]
             ),
         )
         user_id = create.user_id
 
     highlights = await Highlight.fetch_for_user(user_id)
+    create = create.set_disabled(len(highlights) >= constants.MAX_HIGHLIGHTS_PER_USER)
     select.set_options(
         *(
             hikari.SelectMenuOption(
@@ -69,14 +77,37 @@ async def highlight_view_msg(
         )
     )
 
-    first_row = flare.Row(create)
+    row = flare.Row(create)
     if current:
-        first_row.append(EditHighlightButton(current))
-        first_row.append(DeleteHighlightButton(current))
-    rows = await asyncio.gather(first_row, flare.Row(select))
+        assert hl
+        row.append(EditHighlightButton(current))
+        toggle_regex = ToggleIsRegex(current)
+        if hl.is_regex:
+            toggle_regex.set_label("Regex: Yes")
+        else:
+            toggle_regex.set_label("Regex: No")
+        row.append(toggle_regex)
+        row.append(DeleteHighlightButton(current))
+    rows = await asyncio.gather(flare.Row(select), row)
+
+    if hl:
+        embed = hikari.Embed(
+            description=f"```{'re' if hl.is_regex else ''}\n{hl.content}\n```",
+            color=constants.EMBED_DARK_BG,
+        )
+    elif highlights:
+        embed = hikari.Embed(
+            description="- " + "\n- ".join(clip(hl.content, 12) for hl in highlights),
+            color=constants.EMBED_DARK_BG,
+        )
+    else:
+        embed = hikari.Embed(
+            description="You don't have any highlights.",
+            color=constants.EMBED_DARK_BG,
+        )
 
     return {
-        "content": "hi",
+        "embed": embed,
         "components": rows,
     }
 
@@ -85,7 +116,14 @@ class CreateHighlightButton(flare.Button, label="New"):
     user_id: int
 
     async def callback(self, ctx: flare.MessageContext) -> None:
-        await CreateHighlightModal(self.user_id).send(ctx.interaction)
+        total = await Highlight.count(user_id=self.user_id)
+        if total >= constants.MAX_HIGHLIGHTS_PER_USER:
+            await ctx.respond(
+                "You can only have up to 24 highlights.",
+                flags=hikari.MessageFlag.EPHEMERAL,
+            )
+        else:
+            await CreateHighlightModal(self.user_id).send(ctx.interaction)
 
 
 class DeleteHighlightButton(
@@ -100,11 +138,36 @@ class DeleteHighlightButton(
         )
 
 
+class ToggleIsRegex(flare.Button):
+    highlight_id: int
+
+    async def callback(self, ctx: flare.MessageContext) -> None:
+        hl = await Highlight.exists(id=self.highlight_id)
+        if hl:
+            hl.is_regex = not hl.is_regex
+            await hl.save()
+        await ctx.edit_response(
+            **await highlight_view_msg(None, hl.id if hl else None, ctx.message)
+        )
+        if not hl:
+            await ctx.respond(
+                "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
+            )
+
+
 class EditHighlightButton(flare.Button, label="Edit"):
     highlight_id: int
 
     async def callback(self, ctx: flare.MessageContext) -> None:
-        hl = await Highlight.fetch(id=self.highlight_id)
+        hl = await Highlight.exists(id=self.highlight_id)
+        if not hl:
+            await ctx.edit_response(
+                **await highlight_view_msg(None, None, ctx.interaction.message)
+            )
+            await ctx.respond(
+                "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
+            )
+            return
         modal = EditHighlightModal(self.highlight_id)
         modal.content.set_value(hl.content)
         await modal.send(ctx.interaction)
@@ -130,6 +193,14 @@ class CreateHighlightModal(flare.Modal, title="Create Highlight"):
     )
 
     async def callback(self, ctx: flare.ModalContext) -> None:
+        total = await Highlight.count(user_id=self.user_id)
+        if total >= constants.MAX_HIGHLIGHTS_PER_USER:
+            await ctx.respond(
+                "You can only have up to 24 highlights.",
+                flags=hikari.MessageFlag.EPHEMERAL,
+            )
+            return
+
         await User.get_or_create(self.user_id)
         hl = await Highlight(
             user_id=self.user_id, content=unwrap(self.content.value)
@@ -147,9 +218,18 @@ class EditHighlightModal(flare.Modal, title="Edit Highlight"):
     )
 
     async def callback(self, ctx: flare.ModalContext) -> None:
-        hl = await Highlight.fetch(id=self.highlight_id)
-        hl.content = unwrap(self.content.value)
-        await hl.save()
+        hl = await Highlight.exists(id=self.highlight_id)
+        if hl:
+            hl.content = unwrap(self.content.value)
+            await hl.save()
+
         await ctx.edit_response(
-            **await highlight_view_msg(None, hl.id, ctx.interaction.message)
+            **await highlight_view_msg(
+                None, hl.id if hl else None, ctx.interaction.message
+            )
         )
+
+        if not hl:
+            await ctx.respond(
+                "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
+            )
