@@ -1,6 +1,24 @@
 {
     "tables": [
         {
+            "name": "guilds",
+            "fields": [
+                {
+                    "name": "id",
+                    "type_": "BIGINT",
+                    "not_null": true
+                }
+            ],
+            "fk_constraints": [],
+            "pk_constraint": {
+                "name": "_guilds_id_primary_key",
+                "raw_sql": "CONSTRAINT _guilds_id_primary_key PRIMARY KEY ( id )"
+            },
+            "unique_constraints": [],
+            "check_constraints": [],
+            "exclude_constraints": []
+        },
+        {
             "name": "users",
             "fields": [
                 {
@@ -32,8 +50,8 @@
                     "not_null": true
                 },
                 {
-                    "name": "is_regex",
-                    "type_": "BOOLEAN",
+                    "name": "guild_id",
+                    "type_": "BIGINT",
                     "not_null": true
                 },
                 {
@@ -42,13 +60,13 @@
                     "not_null": true
                 },
                 {
-                    "name": "guild_list",
-                    "type_": "BIGINT[]",
-                    "not_null": false
+                    "name": "is_regex",
+                    "type_": "BOOLEAN",
+                    "not_null": true
                 },
                 {
-                    "name": "guild_list_mode",
-                    "type_": "SMALLINT",
+                    "name": "channels",
+                    "type_": "BIGINT[]",
                     "not_null": true
                 }
             ],
@@ -56,6 +74,10 @@
                 {
                     "name": "user_id_fk",
                     "raw_sql": "CONSTRAINT user_id_fk FOREIGN KEY ( user_id ) REFERENCES users ( id ) MATCH SIMPLE ON DELETE CASCADE ON UPDATE CASCADE"
+                },
+                {
+                    "name": "guild_id_fk",
+                    "raw_sql": "CONSTRAINT guild_id_fk FOREIGN KEY ( guild_id ) REFERENCES guilds ( id ) MATCH SIMPLE ON DELETE CASCADE ON UPDATE CASCADE"
                 }
             ],
             "pk_constraint": {
@@ -64,8 +86,8 @@
             },
             "unique_constraints": [
                 {
-                    "name": "content_user_uq",
-                    "raw_sql": "CONSTRAINT content_user_uq UNIQUE ( user_id , content )"
+                    "name": "content_user_guild_uq",
+                    "raw_sql": "CONSTRAINT content_user_guild_uq UNIQUE ( user_id , guild_id , content )"
                 }
             ],
             "check_constraints": [],
@@ -90,10 +112,5 @@
             "exclude_constraints": []
         }
     ],
-    "indexes": [
-        {
-            "name": "_btree_index_highlights__guild_list",
-            "raw_sql": "INDEX _btree_index_highlights__guild_list ON highlights USING BTREE ( ( guild_list ) )"
-        }
-    ]
+    "indexes": []
 }

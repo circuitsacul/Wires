@@ -6,7 +6,7 @@ import flare
 import hikari
 
 from wires import constants
-from wires.database.models import Highlight, User
+from wires.database.models import Guild, Highlight, User
 from wires.utils import clip, unwrap
 
 from .. import Plugin
@@ -15,15 +15,22 @@ plugin = Plugin()
 
 
 @plugin.include
-@crescent.command(name="highlights", description="View and manage your highlights.")
+@crescent.command(
+    name="highlights",
+    description="View and manage your highlights.",
+    dm_enabled=False,
+)
 async def _(ctx: crescent.Context) -> None:
+    assert ctx.guild_id
     await ctx.respond(
-        **await highlight_view_msg(ctx.user.id, None, None), ephemeral=True
+        **await highlight_view_msg(ctx.user.id, ctx.guild_id, None, None),
+        ephemeral=True,
     )
 
 
 async def highlight_view_msg(
     user_id: int | None,
+    guild_id: int | None,
     current: int | None,
     message: hikari.Message | None,
 ) -> dict[str, t.Any]:
@@ -35,9 +42,9 @@ async def highlight_view_msg(
         hl = None
 
     if not message:
-        assert user_id
+        assert user_id and guild_id
         select = SelectHighlight(current)
-        create = CreateHighlightButton(user_id)
+        create = CreateHighlightButton(user_id, guild_id)
     else:
         select = t.cast(
             "SelectHighlight",
@@ -52,8 +59,9 @@ async def highlight_view_msg(
             ),
         )
         user_id = create.user_id
+        guild_id = create.guild_id
 
-    highlights = await Highlight.fetch_for_user(user_id)
+    highlights = await Highlight.fetchmany(user_id=user_id, guild_id=guild_id)
     create = create.set_disabled(len(highlights) >= constants.MAX_HIGHLIGHTS_PER_USER)
     select.set_options(
         *(
@@ -114,9 +122,10 @@ async def highlight_view_msg(
 
 class CreateHighlightButton(flare.Button, label="New"):
     user_id: int
+    guild_id: int
 
     async def callback(self, ctx: flare.MessageContext) -> None:
-        total = await Highlight.count(user_id=self.user_id)
+        total = await Highlight.count(user_id=self.user_id, guild_id=self.guild_id)
         if total >= constants.MAX_HIGHLIGHTS_PER_USER:
             await ctx.respond(
                 "You can only have up to 24 highlights.",
@@ -134,7 +143,7 @@ class DeleteHighlightButton(
     async def callback(self, ctx: flare.MessageContext) -> None:
         await Highlight.delete_query().where(id=self.highlight_id).execute()
         await ctx.edit_response(
-            **await highlight_view_msg(None, None, unwrap(ctx.message))
+            **await highlight_view_msg(None, None, None, unwrap(ctx.message))
         )
 
 
@@ -147,7 +156,7 @@ class ToggleIsRegex(flare.Button):
             hl.is_regex = not hl.is_regex
             await hl.save()
         await ctx.edit_response(
-            **await highlight_view_msg(None, hl.id if hl else None, ctx.message)
+            **await highlight_view_msg(None, None, hl.id if hl else None, ctx.message)
         )
         if not hl:
             await ctx.respond(
@@ -162,7 +171,7 @@ class EditHighlightButton(flare.Button, label="Edit"):
         hl = await Highlight.exists(id=self.highlight_id)
         if not hl:
             await ctx.edit_response(
-                **await highlight_view_msg(None, None, ctx.interaction.message)
+                **await highlight_view_msg(None, None, None, ctx.interaction.message)
             )
             await ctx.respond(
                 "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
@@ -181,7 +190,7 @@ class SelectHighlight(flare.TextSelect):
             int(ctx.values[0]) if ctx.values and ctx.values[0] != "_" else None
         )
         await ctx.edit_response(
-            **await highlight_view_msg(None, self.current, unwrap(ctx.message))
+            **await highlight_view_msg(None, None, self.current, unwrap(ctx.message))
         )
 
 
@@ -195,7 +204,8 @@ class CreateHighlightModal(flare.Modal, title="Create Highlight"):
     )
 
     async def callback(self, ctx: flare.ModalContext) -> None:
-        total = await Highlight.count(user_id=self.user_id)
+        guild_id = unwrap(ctx.guild_id)
+        total = await Highlight.count(user_id=self.user_id, guild_id=guild_id)
         if total >= constants.MAX_HIGHLIGHTS_PER_USER:
             await ctx.respond(
                 "You can only have up to 24 highlights.",
@@ -204,11 +214,14 @@ class CreateHighlightModal(flare.Modal, title="Create Highlight"):
             return
 
         await User.get_or_create(self.user_id)
+        await Guild.get_or_create(guild_id)
         hl = await Highlight(
-            user_id=self.user_id, content=unwrap(self.content.value)
+            user_id=self.user_id,
+            guild_id=guild_id,
+            content=unwrap(self.content.value),
         ).create()
         await ctx.edit_response(
-            **await highlight_view_msg(self.user_id, hl.id, ctx.interaction.message)
+            **await highlight_view_msg(None, None, hl.id, ctx.interaction.message)
         )
 
 
@@ -229,7 +242,10 @@ class EditHighlightModal(flare.Modal, title="Edit Highlight"):
 
         await ctx.edit_response(
             **await highlight_view_msg(
-                None, hl.id if hl else None, ctx.interaction.message
+                None,
+                None,
+                hl.id if hl else None,
+                ctx.interaction.message,
             )
         )
 
