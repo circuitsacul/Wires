@@ -189,7 +189,9 @@ class CreateHighlightModal(flare.Modal, title="Create Highlight"):
     user_id: int
 
     content: flare.TextInput = flare.TextInput(
-        "Highlight content", max_length=constants.MAX_HIGHLIGHT_LENGTH
+        "Highlight content",
+        max_length=constants.MAX_HIGHLIGHT_LENGTH,
+        style=hikari.TextInputStyle.PARAGRAPH,
     )
 
     async def callback(self, ctx: flare.ModalContext) -> None:
@@ -214,7 +216,9 @@ class EditHighlightModal(flare.Modal, title="Edit Highlight"):
     highlight_id: int
 
     content: flare.TextInput = flare.TextInput(
-        "Highlight content", max_length=constants.MAX_HIGHLIGHT_LENGTH
+        "Highlight content",
+        max_length=constants.MAX_HIGHLIGHT_LENGTH,
+        style=hikari.TextInputStyle.PARAGRAPH,
     )
 
     async def callback(self, ctx: flare.ModalContext) -> None:
