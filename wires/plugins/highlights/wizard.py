@@ -4,6 +4,7 @@ import typing as t
 import crescent
 import flare
 import hikari
+from regex_rs import Regex
 
 from wires import constants
 from wires.database.models import Guild, Highlight, User
@@ -85,6 +86,8 @@ async def highlight_view_msg(
         )
     )
 
+    rows = [flare.Row(select)]
+
     row = flare.Row(create)
     if current:
         assert hl
@@ -96,13 +99,43 @@ async def highlight_view_msg(
             toggle_regex.set_label("Regex: No")
         row.append(toggle_regex)
         row.append(DeleteHighlightButton(current))
-    rows = await asyncio.gather(flare.Row(select), row)
+        rows.append(row)
+        rows.append(flare.Row(SelectIgnoredChannels(current)))
+        rows.append(flare.Row(SelectIgnoredUsers(current)))
+
+        c_label = "Blacklist" if hl.channel_list_is_blacklist else "Whitelist"
+        u_label = "Blacklist" if hl.user_list_is_blacklist else "Whitelist"
+        rows.append(
+            flare.Row(
+                ToggleChannelListMode(current).set_label(f"Channel List: {c_label}"),
+                ToggleUserListMode(current).set_label(f"User List: {u_label}"),
+            )
+        )
+    else:
+        rows.append(row)
+    rows_final = await asyncio.gather(*rows)
 
     if hl:
         embed = hikari.Embed(
             description=f"```{'re' if hl.is_regex else ''}\n{hl.content}\n```",
             color=constants.EMBED_DARK_BG,
         )
+        if hl.is_regex:
+            try:
+                Regex(hl.content)
+            except BaseException as e:
+                embed.add_field("Error", f"```re\n{e.args[0]}\n```")
+        if hl.channel_list:
+            mode = "Ignored" if hl.channel_list_is_blacklist else "Allowed"
+            embed.add_field(
+                f"{mode} Channels", ", ".join(f"<#{id}>" for id in hl.channel_list)
+            )
+        if hl.user_list:
+            mode = "Ignored" if hl.user_list_is_blacklist else "Allowed"
+            embed.add_field(
+                f"{mode} Users", ", ".join(f"<@{id}>" for id in hl.user_list)
+            )
+
     elif highlights:
         embed = hikari.Embed(
             description="- " + "\n- ".join(clip(hl.content, 12) for hl in highlights),
@@ -116,7 +149,7 @@ async def highlight_view_msg(
 
     return {
         "embed": embed,
-        "components": rows,
+        "components": rows_final,
     }
 
 
@@ -164,6 +197,42 @@ class ToggleIsRegex(flare.Button):
             )
 
 
+class ToggleChannelListMode(flare.Button):
+    highlight_id: int
+
+    async def callback(self, ctx: flare.MessageContext) -> None:
+        hl = await Highlight.exists(id=self.highlight_id)
+        if hl:
+            hl.channel_list_is_blacklist = not hl.channel_list_is_blacklist
+            await hl.save()
+
+        await ctx.edit_response(
+            **await highlight_view_msg(None, None, hl.id if hl else None, ctx.message)
+        )
+        if not hl:
+            await ctx.respond(
+                "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
+            )
+
+
+class ToggleUserListMode(flare.Button):
+    highlight_id: int
+
+    async def callback(self, ctx: flare.MessageContext) -> None:
+        hl = await Highlight.exists(id=self.highlight_id)
+        if hl:
+            hl.user_list_is_blacklist = not hl.user_list_is_blacklist
+            await hl.save()
+
+        await ctx.edit_response(
+            **await highlight_view_msg(None, None, hl.id if hl else None, ctx.message)
+        )
+        if not hl:
+            await ctx.respond(
+                "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
+            )
+
+
 class EditHighlightButton(flare.Button, label="Edit"):
     highlight_id: int
 
@@ -192,6 +261,46 @@ class SelectHighlight(flare.TextSelect):
         await ctx.edit_response(
             **await highlight_view_msg(None, None, self.current, unwrap(ctx.message))
         )
+
+
+class SelectIgnoredChannels(
+    flare.ChannelSelect, min_values=0, max_values=25, placeholder="Channels"
+):
+    highlight_id: int
+
+    async def callback(self, ctx: flare.MessageContext) -> None:
+        hl = await Highlight.exists(id=self.highlight_id)
+        if hl:
+            hl.channel_list = [c.id for c in ctx.channels]
+            await hl.save()
+
+        await ctx.edit_response(
+            **await highlight_view_msg(None, None, hl.id if hl else None, ctx.message)
+        )
+        if not hl:
+            await ctx.respond(
+                "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
+            )
+
+
+class SelectIgnoredUsers(
+    flare.UserSelect, min_values=0, max_values=25, placeholder="Users"
+):
+    highlight_id: int
+
+    async def callback(self, ctx: flare.MessageContext) -> None:
+        hl = await Highlight.exists(id=self.highlight_id)
+        if hl:
+            hl.user_list = [u.id for u in ctx.users]
+            await hl.save()
+
+        await ctx.edit_response(
+            **await highlight_view_msg(None, None, hl.id if hl else None, ctx.message)
+        )
+        if not hl:
+            await ctx.respond(
+                "That highlight was deleted.", flags=hikari.MessageFlag.EPHEMERAL
+            )
 
 
 class CreateHighlightModal(flare.Modal, title="Create Highlight"):

@@ -27,6 +27,9 @@ class Highlight(Model):
     content = types.Text().field()
     content_user_guild_uq = Unique(user_id, guild_id, content)
     is_regex = types.Boolean().field(default=False)
-    channels = types.Array(types.BigInt()).field(default_factory=list)
+    channel_list = types.Array(types.BigInt()).field(default_factory=list)
+    channel_list_is_blacklist = types.Boolean().field(default=True)
+    user_list = types.Array(types.BigInt()).field(default_factory=list)
+    user_list_is_blacklist = types.Boolean().field(default=True)
 
     primary_key = (id,)

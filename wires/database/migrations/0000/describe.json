@@ -65,8 +65,23 @@
                     "not_null": true
                 },
                 {
-                    "name": "channels",
+                    "name": "channel_list",
                     "type_": "BIGINT[]",
+                    "not_null": true
+                },
+                {
+                    "name": "channel_list_is_blacklist",
+                    "type_": "BOOLEAN",
+                    "not_null": true
+                },
+                {
+                    "name": "user_list",
+                    "type_": "BIGINT[]",
+                    "not_null": true
+                },
+                {
+                    "name": "user_list_is_blacklist",
+                    "type_": "BOOLEAN",
                     "not_null": true
                 }
             ],
