@@ -16,7 +16,12 @@ async def on_message(event: hikari.GuildMessageCreateEvent) -> None:
     if not event.content:
         return
 
-    highlights = await Highlight.fetchmany(guild_id=event.guild_id)
+    highlights = (
+        await Highlight.fetch_query()
+        .where(guild_id=event.guild_id)
+        .where(Highlight.user_id.neq(event.author_id))
+        .fetchmany()
+    )
     notifications: dict[int, list[str]] = {}
 
     for hl in highlights:
