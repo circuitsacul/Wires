@@ -1,7 +1,8 @@
 [tool.mypy]
 strict = true
 
-[tool.mypy-asyncpg]
+[[tool.mypy.overrides]]
+module = "asyncpg.*"
 ignore_missing_imports = true
 
 [tool.ruff]
