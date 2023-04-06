@@ -29,6 +29,7 @@ apgorm = "^1.0.0b14"
 python-dotenv = "^1.0.0"
 hikari-flare = "^0.1.0"
 regex-rs = "^0.2.2"
+floodgate-rs = "^0.1.1"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.1.1"

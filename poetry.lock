@@ -401,6 +401,53 @@ colorama = {version = "*", markers = "sys_platform == \"win32\""}
 development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
 
 [[package]]
+name = "floodgate-rs"
+version = "0.1.1"
+description = "Python bindings for, a ratelimiting library written in Rust."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "floodgate_rs-0.1.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:4849593a9cffeb4ff4ad07b353ea2ac89da7c15722ce9c7969425bec4c2f0635"},
+    {file = "floodgate_rs-0.1.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:ee92c4dd175c76b88b8ad8fb50496f70a30b3c40c42050a5164218152112cb70"},
+    {file = "floodgate_rs-0.1.1-cp310-cp310-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8a4ee68ea612a9e149c05eacffce89544db30b213789f2834f72b372eaade622"},
+    {file = "floodgate_rs-0.1.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4b57f21dfe40cb82e32118531581b217baf03d3e5da7a1e45d793c070d3ff049"},
+    {file = "floodgate_rs-0.1.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:11261655f14bf9e673f1bb55d2a6c3bc819e9f8a0a2dd3af394ded5395961b75"},
+    {file = "floodgate_rs-0.1.1-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:ad8eaa80130ff7c7ea5ffcf74d2e2ad175fe6c93d03132f921bed3478c40eb5c"},
+    {file = "floodgate_rs-0.1.1-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:5b74edb9b88efc8c52957c1227782bd1801b9ebb359a3b2e97cd0419e938a2e5"},
+    {file = "floodgate_rs-0.1.1-cp310-none-win32.whl", hash = "sha256:64d376dedcd2bc479c48d3abb1cacf078b46ed50145bb204b5f1067c644c5e67"},
+    {file = "floodgate_rs-0.1.1-cp310-none-win_amd64.whl", hash = "sha256:44d345e28b73bf73322444ce0b86c23463ab98769219785e6df2abe5c95b595b"},
+    {file = "floodgate_rs-0.1.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:05bee1846a3ec02eb8bdf8066c3bdca34b1ec9f8088e3c94051925e4d3920c09"},
+    {file = "floodgate_rs-0.1.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:6ab6e7a7531e00eaf5f622b3192a3c91037550e2941f1a7828241d72d68d4ed9"},
+    {file = "floodgate_rs-0.1.1-cp311-cp311-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2438791bff0dae9c85394dc2a467a3783c6385e5c477bcb096c14f2ca3e01677"},
+    {file = "floodgate_rs-0.1.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:163c3e711c9161fb6b8da19168199dfc431b0fda11efa660b8da0e4519868e0e"},
+    {file = "floodgate_rs-0.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:aa0fec80b9e3e0d66ba34be1170f2803220535395c5398f8ab739113c32b2278"},
+    {file = "floodgate_rs-0.1.1-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:8dc7940d68d3417316a2ecca1f7f4ce8d12e786c399a6d314458452f9e8758a8"},
+    {file = "floodgate_rs-0.1.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:6175e492ca46ce2951700ace0803062cab09dec2d33dd6c243b00409d69f3f79"},
+    {file = "floodgate_rs-0.1.1-cp311-none-win32.whl", hash = "sha256:53102ea88a906b50c5055884f896b757077c63aade9b70c9d0747649d892c060"},
+    {file = "floodgate_rs-0.1.1-cp311-none-win_amd64.whl", hash = "sha256:5157fa17b386ff844a3f76f57c780b8948e28c96ab50689399959b8d844c5d1c"},
+    {file = "floodgate_rs-0.1.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:059088b5693331b198869bd6522255ac7c6084473d201cbaa02e7043ff3c7cb7"},
+    {file = "floodgate_rs-0.1.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:21111befb4b04f71d3571497d66e751c101992a2dd96e09fe6cc0157a1cd5ca4"},
+    {file = "floodgate_rs-0.1.1-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c879a0037bae0c509e9bb891e86d7adb5bcc023a617f09e0a697e75732d21d71"},
+    {file = "floodgate_rs-0.1.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1964e8246b6eea86ca8ea2f1876f27637aa37a4404cd2ac78ac6ca3c8731f90b"},
+    {file = "floodgate_rs-0.1.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dc3241b3cecd24022b1dda11f97b60c63d794c142570b753ac73c0aaef7566a8"},
+    {file = "floodgate_rs-0.1.1-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:485a9474bd23ecb5d80af1ad57ca73992f64eb418ad1c2f8f47b38baa770f177"},
+    {file = "floodgate_rs-0.1.1-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:4b4735515062313859240d3d3c380335da3a1189b9289c2fd0ba13b622d5cfc2"},
+    {file = "floodgate_rs-0.1.1-cp38-none-win32.whl", hash = "sha256:45a910d703c158be71d780b653cf49f3efb02115f8a53bc6e8d015ba659b1516"},
+    {file = "floodgate_rs-0.1.1-cp38-none-win_amd64.whl", hash = "sha256:8ceb259561c50b5ba0862052d0dc17611994675af60b83c4a45e1f0edc7cca81"},
+    {file = "floodgate_rs-0.1.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:e9f2002a95a49e4520d0e15f3e54d73bab33dd1770167151c0b8d1d03de66ff9"},
+    {file = "floodgate_rs-0.1.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:7307541fb8561f394fbbbef5162abeafae9fb6f08cec977b09d9ce37c5cd66e2"},
+    {file = "floodgate_rs-0.1.1-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:717185c0f24edfd893e157d95eed7adebe6960b12bcae6337fec2733a847c2b7"},
+    {file = "floodgate_rs-0.1.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ef64c6b27aa19b9c3f58675788233672c3223725174f9f0a30625df66625ff7a"},
+    {file = "floodgate_rs-0.1.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cd15ae6fe4aee8b18054c9a1b3083369d657de0591236300e5b2fcfa1579d859"},
+    {file = "floodgate_rs-0.1.1-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:fc1138c6355d2c9cb00df68544d5acd5b914ae8d2956a71f7e0df976f11ec85c"},
+    {file = "floodgate_rs-0.1.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:c8d952c935b279317076ab49d0632b613e1d85ecadfae1fcee7684de2cb87f03"},
+    {file = "floodgate_rs-0.1.1-cp39-none-win32.whl", hash = "sha256:86542f1523e08447cb1369508cf3947bb1d1819c0c780956ec59153ce67f2722"},
+    {file = "floodgate_rs-0.1.1-cp39-none-win_amd64.whl", hash = "sha256:7d51cec7fb31623a95d1add66e5ecd31e3185ca2a463b9fb86aed8d171f36811"},
+    {file = "floodgate_rs-0.1.1.tar.gz", hash = "sha256:ffb1564f4a2b9425f659269b73eed33bfd41e705323c6bb8e3d4b1b1d92d0caf"},
+]
+
+[[package]]
 name = "frozenlist"
 version = "1.3.3"
 description = "A list-like structure which implements collections.abc.MutableSequence"
@@ -1025,4 +1072,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11,<3.12"
-content-hash = "774e5a7a0e2cb0084643c6cc715e5da8dfaba29b1e56034c4bf3c27fb01f570b"
+content-hash = "e93658c322a71e321874f3a8a08752cbf931dda2d4426104e8b30d156f7b34c6"
