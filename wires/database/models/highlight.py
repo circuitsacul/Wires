@@ -1,11 +1,6 @@
 import enum
 
-from apgorm import (
-    ForeignKey,
-    Model,
-    Unique,
-    types,
-)
+from apgorm import ForeignKey, Model, types
 
 from .guild import Guild
 from .user import User
@@ -25,7 +20,6 @@ class Highlight(Model):
     guild_id_fk = ForeignKey(guild_id, Guild.id)
 
     content = types.Text().field()
-    content_user_guild_uq = Unique(user_id, guild_id, content)
     is_regex = types.Boolean().field(default=False)
     channel_list = types.Array(types.BigInt()).field(default_factory=list)
     channel_list_is_blacklist = types.Boolean().field(default=True)

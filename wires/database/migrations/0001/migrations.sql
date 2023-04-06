@@ -1,0 +1,1 @@
+ALTER TABLE highlights DROP CONSTRAINT content_user_guild_uq;
