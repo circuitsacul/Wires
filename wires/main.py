@@ -8,10 +8,12 @@ import hikari
 from wires.database import Database
 from wires.model import Model
 
+INTENTS = hikari.Intents.ALL_UNPRIVILEGED | hikari.Intents.MESSAGE_CONTENT
+
 
 def run_app() -> None:
     model = Model()
-    app = hikari.GatewayBot(model.config.token)
+    app = hikari.GatewayBot(model.config.token, intents=INTENTS)
     client = crescent.Client(app, model)
 
     flare.install(app)
