@@ -13,21 +13,23 @@ from .. import Plugin
 plugin = Plugin()
 
 TRIGGER_COOLDOWN: "FixedMapping[int]" = FixedMapping(3, timedelta(minutes=10))
-ACTIVE_COOLDOWN: "FixedMapping[int]" = FixedMapping(1, timedelta(minutes=5))
+ACTIVE_COOLDOWN: "FixedMapping[tuple[int, int]]" = FixedMapping(1, timedelta(minutes=5))
 
 
 @plugin.include
 @crescent.event
 async def on_message(event: hikari.GuildMessageCreateEvent) -> None:
-    ACTIVE_COOLDOWN.reset(event.author_id)
-    ret = ACTIVE_COOLDOWN.trigger(event.author_id)
+    active_key = (event.author_id, event.channel_id)
+    ACTIVE_COOLDOWN.reset(active_key)
+    ret = ACTIVE_COOLDOWN.trigger(active_key)
     assert ret is None, "reset failed"
 
     if not event.content:
         return
 
     highlights = (
-        await Highlight.fetch_query().where(guild_id=event.guild_id)
+        await Highlight.fetch_query()
+        .where(guild_id=event.guild_id)
         .where(Highlight.user_id.neq(event.author_id))
         .fetchmany()
     )
@@ -62,7 +64,7 @@ async def on_message(event: hikari.GuildMessageCreateEvent) -> None:
             if hl.content not in event.content:
                 continue
 
-        if not ACTIVE_COOLDOWN.can_trigger(hl.user_id):
+        if not ACTIVE_COOLDOWN.can_trigger((hl.user_id, event.channel_id)):
             continue
         if TRIGGER_COOLDOWN.trigger(hl.id):
             continue
