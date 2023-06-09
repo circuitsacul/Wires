@@ -1,12 +1,14 @@
 import asyncpg
 import crescent
+import flare
 import hikari
 
 from wires import constants
 from wires.database.models import TicketConfig
-from wires.errors import WiresErr
+from wires.errors import MissingTicketConfig, NoTicketConfigs, WiresErr
 
 from .. import Plugin
+from .plugin import CreateTicketButton
 
 plugin = Plugin()
 group = crescent.Group(
@@ -36,7 +38,7 @@ class ListTicketConfigs:
         configs = await TicketConfig.fetchmany(guild_id=ctx.guild_id)
 
         if not len(configs):
-            raise WiresErr("There are no existing ticket configurations.")
+            raise NoTicketConfigs()
 
         embed = hikari.Embed(color=constants.EMBED_DARK_BG)
         for config in configs:
@@ -98,7 +100,7 @@ class DeleteTicketConfiguration:
             .execute()
         )
         if not len(config):
-            raise WiresErr(f"No ticket configuration named '{self.name}' exists.")
+            raise MissingTicketConfig(self.name)
         await ctx.respond(f"Deleted ticket configuration '{self.name}'.")
 
 
@@ -118,4 +120,15 @@ class CreateEntrypoint:
     button = crescent.option(str, "The button label.")
 
     async def callback(self, ctx: crescent.Context) -> None:
-        await ctx.respond("todo")
+        assert ctx.guild_id
+        config = await TicketConfig.fetch(guild_id=ctx.guild_id, name=self.name)
+
+        if config is None:
+            raise MissingTicketConfig(self.name)
+
+        button = CreateTicketButton(config.id).set_label(self.button)
+        row = await flare.Row(button)
+
+        await ctx.app.rest.create_message(config.channel, self.content, component=row)
+
+        await ctx.respond("Done.", ephemeral=True)

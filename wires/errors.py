@@ -4,6 +4,17 @@ class WiresErr(Exception):
         super().__init__(message)
 
 
+class NoTicketConfigs(WiresErr):
+    def __init__(self) -> None:
+        super().__init__("There are no ticket configurations.")
+
+
+class MissingTicketConfig(WiresErr):
+    def __init__(self, name: str) -> None:
+        self.name = name
+        super().__init__(f"There is no ticket configuration named '{name}'.")
+
+
 class NoDatabase(WiresErr):
     def __init__(self) -> None:
         super().__init__(
