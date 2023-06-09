@@ -1,0 +1,169 @@
+{
+    "tables": [
+        {
+            "name": "guilds",
+            "fields": [
+                {
+                    "name": "id",
+                    "type_": "BIGINT",
+                    "not_null": true
+                }
+            ],
+            "fk_constraints": [],
+            "pk_constraint": {
+                "name": "_guilds_id_primary_key",
+                "raw_sql": "CONSTRAINT _guilds_id_primary_key PRIMARY KEY ( id )"
+            },
+            "unique_constraints": [],
+            "check_constraints": [],
+            "exclude_constraints": []
+        },
+        {
+            "name": "users",
+            "fields": [
+                {
+                    "name": "id",
+                    "type_": "BIGINT",
+                    "not_null": true
+                }
+            ],
+            "fk_constraints": [],
+            "pk_constraint": {
+                "name": "_users_id_primary_key",
+                "raw_sql": "CONSTRAINT _users_id_primary_key PRIMARY KEY ( id )"
+            },
+            "unique_constraints": [],
+            "check_constraints": [],
+            "exclude_constraints": []
+        },
+        {
+            "name": "highlights",
+            "fields": [
+                {
+                    "name": "id",
+                    "type_": "SERIAL",
+                    "not_null": true
+                },
+                {
+                    "name": "user_id",
+                    "type_": "BIGINT",
+                    "not_null": true
+                },
+                {
+                    "name": "guild_id",
+                    "type_": "BIGINT",
+                    "not_null": true
+                },
+                {
+                    "name": "content",
+                    "type_": "TEXT",
+                    "not_null": true
+                },
+                {
+                    "name": "is_regex",
+                    "type_": "BOOLEAN",
+                    "not_null": true
+                },
+                {
+                    "name": "channel_list",
+                    "type_": "BIGINT[]",
+                    "not_null": true
+                },
+                {
+                    "name": "channel_list_is_blacklist",
+                    "type_": "BOOLEAN",
+                    "not_null": true
+                },
+                {
+                    "name": "user_list",
+                    "type_": "BIGINT[]",
+                    "not_null": true
+                },
+                {
+                    "name": "user_list_is_blacklist",
+                    "type_": "BOOLEAN",
+                    "not_null": true
+                }
+            ],
+            "fk_constraints": [
+                {
+                    "name": "user_id_fk",
+                    "raw_sql": "CONSTRAINT user_id_fk FOREIGN KEY ( user_id ) REFERENCES users ( id ) MATCH SIMPLE ON DELETE CASCADE ON UPDATE CASCADE"
+                },
+                {
+                    "name": "guild_id_fk",
+                    "raw_sql": "CONSTRAINT guild_id_fk FOREIGN KEY ( guild_id ) REFERENCES guilds ( id ) MATCH SIMPLE ON DELETE CASCADE ON UPDATE CASCADE"
+                }
+            ],
+            "pk_constraint": {
+                "name": "_highlights_id_primary_key",
+                "raw_sql": "CONSTRAINT _highlights_id_primary_key PRIMARY KEY ( id )"
+            },
+            "unique_constraints": [],
+            "check_constraints": [],
+            "exclude_constraints": []
+        },
+        {
+            "name": "ticket_configs",
+            "fields": [
+                {
+                    "name": "id",
+                    "type_": "SERIAL",
+                    "not_null": true
+                },
+                {
+                    "name": "guild_id",
+                    "type_": "BIGINT",
+                    "not_null": true
+                },
+                {
+                    "name": "name",
+                    "type_": "VARCHAR(32)",
+                    "not_null": true
+                },
+                {
+                    "name": "channel",
+                    "type_": "BIGINT",
+                    "not_null": true
+                }
+            ],
+            "fk_constraints": [
+                {
+                    "name": "guild_id_fk",
+                    "raw_sql": "CONSTRAINT guild_id_fk FOREIGN KEY ( guild_id ) REFERENCES guilds ( id ) MATCH SIMPLE ON DELETE CASCADE ON UPDATE CASCADE"
+                }
+            ],
+            "pk_constraint": {
+                "name": "_ticket_configs_id_primary_key",
+                "raw_sql": "CONSTRAINT _ticket_configs_id_primary_key PRIMARY KEY ( id )"
+            },
+            "unique_constraints": [
+                {
+                    "name": "channel_guild_uq",
+                    "raw_sql": "CONSTRAINT channel_guild_uq UNIQUE ( channel , guild_id )"
+                }
+            ],
+            "check_constraints": [],
+            "exclude_constraints": []
+        },
+        {
+            "name": "_migrations",
+            "fields": [
+                {
+                    "name": "id_",
+                    "type_": "INTEGER",
+                    "not_null": true
+                }
+            ],
+            "fk_constraints": [],
+            "pk_constraint": {
+                "name": "__migrations_id__primary_key",
+                "raw_sql": "CONSTRAINT __migrations_id__primary_key PRIMARY KEY ( id_ )"
+            },
+            "unique_constraints": [],
+            "check_constraints": [],
+            "exclude_constraints": []
+        }
+    ],
+    "indexes": []
+}
