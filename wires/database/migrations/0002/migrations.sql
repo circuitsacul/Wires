@@ -1,12 +1,12 @@
 CREATE TABLE ticket_configs ();
 ALTER TABLE ticket_configs ADD COLUMN id SERIAL;
-ALTER TABLE ticket_configs ADD COLUMN guild_id BIGINT;
 ALTER TABLE ticket_configs ADD COLUMN name VARCHAR(32);
+ALTER TABLE ticket_configs ADD COLUMN guild_id BIGINT;
 ALTER TABLE ticket_configs ADD COLUMN channel BIGINT;
 ALTER TABLE ticket_configs ALTER COLUMN id SET NOT NULL;
-ALTER TABLE ticket_configs ALTER COLUMN guild_id SET NOT NULL;
 ALTER TABLE ticket_configs ALTER COLUMN name SET NOT NULL;
+ALTER TABLE ticket_configs ALTER COLUMN guild_id SET NOT NULL;
 ALTER TABLE ticket_configs ALTER COLUMN channel SET NOT NULL;
-ALTER TABLE ticket_configs ADD CONSTRAINT channel_guild_uq UNIQUE ( channel , guild_id );
+ALTER TABLE ticket_configs ADD CONSTRAINT name_guild_uq UNIQUE ( guild_id , name );
 ALTER TABLE ticket_configs ADD CONSTRAINT _ticket_configs_id_primary_key PRIMARY KEY ( id );
 ALTER TABLE ticket_configs ADD CONSTRAINT guild_id_fk FOREIGN KEY ( guild_id ) REFERENCES guilds ( id ) MATCH SIMPLE ON DELETE CASCADE ON UPDATE CASCADE;

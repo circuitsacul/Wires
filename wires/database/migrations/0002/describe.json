@@ -112,13 +112,13 @@
                     "not_null": true
                 },
                 {
-                    "name": "guild_id",
-                    "type_": "BIGINT",
+                    "name": "name",
+                    "type_": "VARCHAR(32)",
                     "not_null": true
                 },
                 {
-                    "name": "name",
-                    "type_": "VARCHAR(32)",
+                    "name": "guild_id",
+                    "type_": "BIGINT",
                     "not_null": true
                 },
                 {
@@ -139,8 +139,8 @@
             },
             "unique_constraints": [
                 {
-                    "name": "channel_guild_uq",
-                    "raw_sql": "CONSTRAINT channel_guild_uq UNIQUE ( channel , guild_id )"
+                    "name": "name_guild_uq",
+                    "raw_sql": "CONSTRAINT name_guild_uq UNIQUE ( guild_id , name )"
                 }
             ],
             "check_constraints": [],
