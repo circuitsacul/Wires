@@ -30,6 +30,7 @@ python-dotenv = "^1.0.0"
 hikari-flare = "^0.1.0"
 regex-rs = "^0.2.2"
 floodgate-rs = "^0.1.1"
+hikari-toolbox = "^0.1.5"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.1.1"
