@@ -18,7 +18,6 @@ async def create_ticket(config_id: int, user: int) -> str:
     )
 
     await plugin.app.rest.add_thread_member(thread, user)
-    await thread.send(f"<@{user}> todo")
 
     return f"Ticket created in <#{thread.id}>"
 
@@ -28,4 +27,4 @@ class CreateTicketButton(flare.Button):
 
     async def callback(self, ctx: flare.MessageContext) -> None:
         resp = await create_ticket(self.ticket_config_id, ctx.user.id)
-        await ctx.respond(resp)
+        await ctx.respond(resp, flags=hikari.MessageFlag.EPHEMERAL)
