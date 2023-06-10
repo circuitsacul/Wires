@@ -16,7 +16,7 @@ def run_app() -> None:
     app = hikari.GatewayBot(
         model.config.token,
         intents=INTENTS,
-        http_settings=hikari.impl.HTTPSettings(enable_cleanup_closed=False)
+        http_settings=hikari.impl.HTTPSettings(enable_cleanup_closed=False),
     )
     client = crescent.Client(app, model)
 
