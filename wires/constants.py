@@ -1,5 +1,6 @@
 # discord stuff
 EMBED_DARK_BG = 0x2B2D31
+MAX_MESSAGE_LENGTH = 4_000
 
 # limits
 MAX_HIGHLIGHT_LENGTH = 500

@@ -1,0 +1,1 @@
+ALTER TABLE ticket_configs ADD COLUMN initial_message_content TEXT;

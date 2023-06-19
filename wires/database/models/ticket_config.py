@@ -12,6 +12,8 @@ class TicketConfig(Model):
 
     channel = types.BigInt().field()
 
+    initial_message_content = types.Text().nullablefield()
+
     name_guild_uq = Unique(guild_id, name)
 
     primary_key = (id,)

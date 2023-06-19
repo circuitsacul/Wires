@@ -15,6 +15,12 @@ class MissingTicketConfig(WiresErr):
         super().__init__(f"There is no ticket configuration named '{name}'.")
 
 
+class DuplicateTicketConfigName(WiresErr):
+    def __init__(self, name: str) -> None:
+        self.name = name
+        super().__init__(f"There is already a ticket configuration named '{name}'.")
+
+
 class NoDatabase(WiresErr):
     def __init__(self) -> None:
         super().__init__(
