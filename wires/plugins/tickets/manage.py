@@ -5,7 +5,12 @@ import hikari
 
 from wires import constants
 from wires.database.models import TicketConfig
-from wires.errors import MissingTicketConfig, NoTicketConfigs, WiresErr
+from wires.errors import (
+    DuplicateTicketConfigName,
+    MissingTicketConfig,
+    NoTicketConfigs,
+    WiresErr,
+)
 
 from .. import Plugin
 from .plugin import CreateTicketButton
@@ -17,6 +22,22 @@ group = crescent.Group(
     default_member_permissions=hikari.Permissions.MANAGE_GUILD,
     dm_enabled=False,
 )
+
+
+def clean_name(name: str) -> str:
+    name = "".join([c for c in name if c.isalnum() or c == "_"])
+    name_len = len(name)
+    if name_len < 2 or name_len > 32:
+        raise WiresErr(
+            "`name` must be between 2 and 32 characters, and only consist of "
+            "a-zA-Z0-9_."
+        )
+    return name
+
+
+def validate_initial(content: str) -> None:
+    if len(content) > (length := constants.MAX_MESSAGE_LENGTH):
+        raise WiresErr(f"The initial message cannot be longer than {length}.")
 
 
 async def ticket_config_autocomplete(
@@ -57,28 +78,33 @@ class NewTicketConfig:
     name = crescent.option(
         str, "The name of the ticket configuration.", max_length=32, min_length=2
     )
+    initial = crescent.option(
+        str,
+        "The initial message to send in a new ticket.",
+        max_length=constants.MAX_MESSAGE_LENGTH,
+        default=None,
+    )
 
     async def callback(self, ctx: crescent.Context) -> None:
         assert ctx.guild_id
 
-        name = "".join([c for c in self.name if c.isalnum() or c == "_"])
-        name_len = len(name)
-        if name_len < 2 or name_len > 32:
-            raise WiresErr(
-                "`name` must be between 2 and 32 characters, and only consist of "
-                "a-zA-Z0-9_."
-            )
+        name = clean_name(self.name)
+        if self.initial:
+            validate_initial(self.initial)
 
         try:
             await TicketConfig(
-                name=name, channel=self.channel.id, guild_id=ctx.guild_id
+                name=name,
+                channel=self.channel.id,
+                guild_id=ctx.guild_id,
+                initial_message_content=self.initial,
             ).create()
         except asyncpg.UniqueViolationError:
-            raise WiresErr("The name of a ticket configuration must be unique.")
+            raise DuplicateTicketConfigName(name)
 
         await ctx.respond(
             f"Created config '{name}'. Use `/tickets entrypoint` to send an entrypoint "
-            "message."
+            "message.",
         )
 
 
@@ -102,6 +128,69 @@ class DeleteTicketConfiguration:
         if not len(config):
             raise MissingTicketConfig(self.name)
         await ctx.respond(f"Deleted ticket configuration '{self.name}'.")
+
+
+@plugin.include
+@group.child
+@crescent.command(name="rename", description="Rename a ticket configuration.")
+class RenameTicketConfiguration:
+    name = crescent.option(
+        str,
+        "The name of the ticket configuration.",
+        autocomplete=ticket_config_autocomplete,
+    )
+    new_name = crescent.option(
+        str,
+        "The new name of the ticket configuration.",
+        autocomplete=ticket_config_autocomplete,
+        name="new-name",
+    )
+
+    async def callback(self, ctx: crescent.Context) -> None:
+        assert ctx.guild_id
+
+        config = await TicketConfig.exists(guild_id=ctx.guild_id, name=self.name)
+        if not config:
+            raise MissingTicketConfig(self.name)
+
+        config.name = name = clean_name(self.new_name)
+        try:
+            await config.save()
+        except asyncpg.UniqueViolationError:
+            raise DuplicateTicketConfigName(name)
+
+        await ctx.respond("Renamed ticket configuration.")
+
+
+@plugin.include
+@group.child
+@crescent.command(name="edit-initial", description="Edit the initial message.")
+class EditInitialMessage:
+    name = crescent.option(
+        str,
+        "The name of the ticket configuration.",
+        autocomplete=ticket_config_autocomplete,
+    )
+    initial = crescent.option(
+        str,
+        "The initial message to send in a new ticket.",
+        max_length=constants.MAX_MESSAGE_LENGTH,
+        default=None,
+    )
+
+    async def callback(self, ctx: crescent.Context) -> None:
+        assert ctx.guild_id
+
+        if self.initial:
+            validate_initial(self.initial)
+
+        config = await TicketConfig.exists(guild_id=ctx.guild_id, name=self.name)
+        if not config:
+            raise MissingTicketConfig(self.name)
+
+        config.initial_message_content = self.initial
+        await config.save()
+        await ctx.respond("Updated ticket configuration.")
 
 
 @plugin.include
@@ -131,4 +220,4 @@ class CreateEntrypoint:
 
         await ctx.app.rest.create_message(config.channel, self.content, component=row)
 
-        await ctx.respond("Done.", ephemeral=True)
+        await ctx.respond("Done.")
