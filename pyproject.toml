@@ -34,7 +34,7 @@ hikari-toolbox = "^0.1.5"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.1.1"
-ruff = "^0.0.259"
+ruff = "^0.0.272"
 black = "^23.1.0"
 
 [build-system]
