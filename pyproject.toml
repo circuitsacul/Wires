@@ -24,7 +24,7 @@ apply-migrations = "wires.main:apply_migrations"
 [tool.poetry.dependencies]
 python = "^3.11,<3.12"
 hikari = "^2.0.0.dev120"
-hikari-crescent = "^0.6.0"
+hikari-crescent = "^0.6.1"
 apgorm = "^1.0.0b14"
 python-dotenv = "^1.0.0"
 hikari-flare = "^0.1.0"
