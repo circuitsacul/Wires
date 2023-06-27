@@ -541,17 +541,17 @@ speedups = ["aiohttp[speedups] (>=3.8,<4.0)", "ciso8601 (>=2.3,<3.0)", "orjson (
 
 [[package]]
 name = "hikari-crescent"
-version = "0.6.0"
+version = "0.6.2"
 description = "🌙 A command handler for Hikari that keeps your project neat and tidy."
 optional = false
 python-versions = ">=3.8,<3.12"
 files = [
-    {file = "hikari_crescent-0.6.0-py3-none-any.whl", hash = "sha256:66a4ca9a881af7c9f206951a00b726c120b0035da90a2c0f1f6722d766ef69c3"},
-    {file = "hikari_crescent-0.6.0.tar.gz", hash = "sha256:fa4b182e55e9fe5bca9faf43d9c9ce506e3a5ed39f9fc1c1c2fb0a2af7d150a7"},
+    {file = "hikari_crescent-0.6.2-py3-none-any.whl", hash = "sha256:4d42a735e5522ac48aa817e2c2364da57439ece558df515f8f62479d445f7322"},
+    {file = "hikari_crescent-0.6.2.tar.gz", hash = "sha256:80c9ef1c2c361137a4c935dcf506a74f0b4c4643f65a0a5997a8c2f16f98283a"},
 ]
 
 [package.dependencies]
-hikari = ">=2.0.0.dev115"
+hikari = "2.0.0.dev120"
 sigparse = ">=3.0.0,<4.0.0"
 
 [package.extras]
@@ -1060,4 +1060,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11,<3.12"
-content-hash = "b9db0a789b999179ce0b1ebc0506d1f3fad4be9edca471c225c700f105232941"
+content-hash = "6df867b5ca24d92cab4d967e74ac2416e21fa7c7a387dc13a9379dce769bb25b"
