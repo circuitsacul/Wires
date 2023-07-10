@@ -28,7 +28,7 @@ hikari-crescent = "^0.6.2"
 apgorm = "^1.0.0b14"
 python-dotenv = "^1.0.0"
 hikari-flare = "^0.1.0"
-regex-rs = "^0.2.2"
+regex-rs = "^0.2.4"
 floodgate-rs = "^0.1.2"
 hikari-toolbox = "^0.1.5"
 
