@@ -391,48 +391,48 @@ development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
 
 [[package]]
 name = "floodgate-rs"
-version = "0.1.2"
+version = "0.1.3"
 description = "Python bindings for, a ratelimiting library written in Rust."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "floodgate_rs-0.1.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:113b31cd52f3b18a986fa0c0085559f60a0052e984d50b612c63944ce30e8f4e"},
-    {file = "floodgate_rs-0.1.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:979c338bdee512f72429fef4557593d1110152989e809738918b2bcc10652544"},
-    {file = "floodgate_rs-0.1.2-cp310-cp310-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:4048ab173416b20c55a1ebb5925f994cafc59515f82f184ae7e34aa3db518874"},
-    {file = "floodgate_rs-0.1.2-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:34724cfe428ff84106dee04af522c50b21e2c83b8d5c94967f47b2d788f08a49"},
-    {file = "floodgate_rs-0.1.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:11f0f161ef2196662dd4a62e40684b78edc50565be3f94ae2bcb5aae9bbcb827"},
-    {file = "floodgate_rs-0.1.2-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:4e8bc98e33ac0a110c3d4dfa31bcf90c51bc348eba92e2201a48eccf9561cc8b"},
-    {file = "floodgate_rs-0.1.2-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:cadee8a0086816b2c764366caa91dfabed9bb4bd857e25f7481fbcbc776079ab"},
-    {file = "floodgate_rs-0.1.2-cp310-none-win32.whl", hash = "sha256:8492298314463006d80c99ad2f8f7022d1369cfd074ef8cd4c1349b80fb1ea26"},
-    {file = "floodgate_rs-0.1.2-cp310-none-win_amd64.whl", hash = "sha256:a71fb030f09582e719798ccba65f89e5ffbad9680a6ff5892a74191b66ef885e"},
-    {file = "floodgate_rs-0.1.2-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:a8bca6d20980edfc2d8c94975ad1ae1911fa0c241f7d5c391b1c26ee342051ed"},
-    {file = "floodgate_rs-0.1.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:861adcd8b18cbef46c9b15399c6e8a842d6d4c5af12ce3a73a54d4df9117e7a6"},
-    {file = "floodgate_rs-0.1.2-cp311-cp311-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1a531d73a870e443f4cfc2e0739a64485d0ba88572ca455f037f47f7d8828bd6"},
-    {file = "floodgate_rs-0.1.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2d1bc0ec0a79888af5a1e84bf6d37eae627c14f7c20eb2be59069c4ec34dcdb4"},
-    {file = "floodgate_rs-0.1.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e91b180b3078e129bba619064e7e99ad6426da27c746274a8ecfa2ac79676182"},
-    {file = "floodgate_rs-0.1.2-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:3ec1d4fbc00e4546c89bd66f92888a2ce3aa3d140cb0613f36538a35079f89d7"},
-    {file = "floodgate_rs-0.1.2-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:a7c223330ae69fb25724e37ed661ea011bc6e26a2275c632d4f05923a7fa886e"},
-    {file = "floodgate_rs-0.1.2-cp311-none-win32.whl", hash = "sha256:861821c9cefe5fb59770bee900b1e877e4a6bf5e53b9db72cf88d7773329abac"},
-    {file = "floodgate_rs-0.1.2-cp311-none-win_amd64.whl", hash = "sha256:81e9a37f8b79d2fc8f4799dd159441623a1ff1823dc03c901494ba7984beb23a"},
-    {file = "floodgate_rs-0.1.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:998b51c3331b361dce56cb1108940868d4ef92070ed34f30759cedc7f47cc4e1"},
-    {file = "floodgate_rs-0.1.2-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:b8b105ddc18022fee519decd885fd3d9d26e67572da494efabd0eacc9a17fa09"},
-    {file = "floodgate_rs-0.1.2-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:4472655b39791182dd6d7f2b428f27082c854f68e44cf9cdf843a6036cf875fb"},
-    {file = "floodgate_rs-0.1.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9aef3695e084f19e8ae35ebe42a4dd68098db6b731c5cc085fae6e8ddd3f4c6f"},
-    {file = "floodgate_rs-0.1.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3521572e0d9e91086fab45644739565d8f7c8063fc8f9c8a9f30f5e5b838fb9b"},
-    {file = "floodgate_rs-0.1.2-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:d4b6d7d01b32c2356d55c31d9d1b13e012dddfcd3150f069abcb71ef87042737"},
-    {file = "floodgate_rs-0.1.2-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:dab973e7c43a787946a63983a22ffdc01fb1acd6401d96d42c74bf47eacdb82e"},
-    {file = "floodgate_rs-0.1.2-cp38-none-win32.whl", hash = "sha256:5161219785df04bd493d9863b3524c776ea64ee195c4067980875e2d3e52c517"},
-    {file = "floodgate_rs-0.1.2-cp38-none-win_amd64.whl", hash = "sha256:25f5b93f2bbce71aa35ea296721a811d84724a2fa3571175087827f8a6987182"},
-    {file = "floodgate_rs-0.1.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:eb4f366827a309b1a11b94fbfeee8845aa37d1ffe899e3b314d85cc8733ca750"},
-    {file = "floodgate_rs-0.1.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:b405668275cbec2d2ef0cd5233a25af7aa9a95912a92653ab6dfb09a44e7229c"},
-    {file = "floodgate_rs-0.1.2-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:caf663af8fbd61598aaaee388d695f1402a1b60d8ae6425e9eb7d3d29597085c"},
-    {file = "floodgate_rs-0.1.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8c95eda5408f3fbab86b9b0605a66052565eb9ef2b519fa2b2afcf76d22a5ee8"},
-    {file = "floodgate_rs-0.1.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1c19cafff3ad9a9341e3f84a7b05a0df63305f7cbf173af477b4324b160b366d"},
-    {file = "floodgate_rs-0.1.2-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:946d63fe691231d0cc1b112a6b1daac106d7001d879eb2ce1cae01f0294a9d3e"},
-    {file = "floodgate_rs-0.1.2-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:4587a7422eb66a5f67e2b5537a3b01bcf4e922497cc03b07bf8be85da0ea5d66"},
-    {file = "floodgate_rs-0.1.2-cp39-none-win32.whl", hash = "sha256:f503558a45ca10573b5da62a7c833ca3824e2f61e75a39aad68bead830cdb854"},
-    {file = "floodgate_rs-0.1.2-cp39-none-win_amd64.whl", hash = "sha256:299c39b53526265da1d79fe838658f641399d931309cc740b66c0cf2f8e85f76"},
-    {file = "floodgate_rs-0.1.2.tar.gz", hash = "sha256:d4f557a796ec10f3df08e25a8780b27f6f7a019180691de88b1381b273812fe2"},
+    {file = "floodgate_rs-0.1.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:5526472f0d8b22216afb23bb960279b558a17ff7bf0d56035e6991e525b099f8"},
+    {file = "floodgate_rs-0.1.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:f8154f6d48093f1a7e2668c0064d8fb77bb34b43a073ee0fe90737abcd471fdb"},
+    {file = "floodgate_rs-0.1.3-cp310-cp310-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ea109fff17b963ab13fc7c2c0da6dadc36f64b1617b0963731d193269f5c6306"},
+    {file = "floodgate_rs-0.1.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8979d05fd13945fb905d94c0c0b4e2d6fd5822012cd727ccdc9abe6b724be243"},
+    {file = "floodgate_rs-0.1.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c24012e382e5ce4582b7c55a11fd40a9a27e35b3cccf82dab9f448ef6aa52e90"},
+    {file = "floodgate_rs-0.1.3-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:688f9f9ceb5dad28ab3ea6bac14e7b7d3936676062a55ec65a05537c09bbf92d"},
+    {file = "floodgate_rs-0.1.3-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:165706e1dcaae743ffe62f412bfb16caf55aff026a56a7e16ef90fe6e665042f"},
+    {file = "floodgate_rs-0.1.3-cp310-none-win32.whl", hash = "sha256:1196e093766b1e01b78741bb55dddb93b5f70b80a6f16bfed67dc0c03ffba897"},
+    {file = "floodgate_rs-0.1.3-cp310-none-win_amd64.whl", hash = "sha256:65f225fa7f939faeed8e5e848b810614a40c4f19f01c4df705772a7f040c7027"},
+    {file = "floodgate_rs-0.1.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:aa92cfa55f0187071fa1078de8587f2f8a1f9c4cc6e239771864540226eee9b2"},
+    {file = "floodgate_rs-0.1.3-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:c3eb292defc3791826c381b69853626dd188b9378fc426e15452b5cdefd45818"},
+    {file = "floodgate_rs-0.1.3-cp311-cp311-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8a82dd69950f352f4b66a41632f352e81f6c69ceb0270c1835540c935293d994"},
+    {file = "floodgate_rs-0.1.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4bb3ecaed4689c8629767a8f6a7744634dc5c391f810be1dbbb41c3305965191"},
+    {file = "floodgate_rs-0.1.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:21a1780738919ab9c47a49d3cca8929f2d3edbd5c76f13efa8bc56360ff984f2"},
+    {file = "floodgate_rs-0.1.3-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:b18b5315d95cf9c366259d04d2adbdbb09c8762d35f47d6ff5bae80ff30f4666"},
+    {file = "floodgate_rs-0.1.3-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:d8a560975945c0e5644c2399f331fc7b4b75a8f918119e3b2eba41ba4671d0bb"},
+    {file = "floodgate_rs-0.1.3-cp311-none-win32.whl", hash = "sha256:bd2b5a1b46007103bf5d9506fe71cc6e46d7fa2a0f462946399c6f4d8b6fc571"},
+    {file = "floodgate_rs-0.1.3-cp311-none-win_amd64.whl", hash = "sha256:6869e0f75e6b7162fb4f0c32a638ed9ac9c47f99959d91b97a408d43ea93a634"},
+    {file = "floodgate_rs-0.1.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:030d97c49aedb45fbe00a5d0448e5ea57b23674837e8c42a230929ea89b03ac0"},
+    {file = "floodgate_rs-0.1.3-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:95e5988c89978c0540f67e557457e2ada515c6378b3e515d97b91f05a99c105f"},
+    {file = "floodgate_rs-0.1.3-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:4560ed0808ec36c1d84df34e2ffd6088ffd98c139943c9c5e775737f1c0e05e7"},
+    {file = "floodgate_rs-0.1.3-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5a95698239cebf384733bd2dd78f64b419df2d8f155b002bfd68dfe13381e50a"},
+    {file = "floodgate_rs-0.1.3-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f8333be49d97046c9be5ce8f30cbfc08cdcf0b8a904f29e0b628d1cc986f31d8"},
+    {file = "floodgate_rs-0.1.3-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:066b7918f531aba9b4b492d1a4cd848b79996aa61b67568ee636d145cf5b2db7"},
+    {file = "floodgate_rs-0.1.3-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:10fea68e2cc9bbaa3ecba2ab0c6e1d09782be6dfe17514f724e771e2ec3bc25e"},
+    {file = "floodgate_rs-0.1.3-cp38-none-win32.whl", hash = "sha256:ade7b0ae3de3ff852b4c4c472c79ff4e43cc8a6b6131a158dcffae85760e465d"},
+    {file = "floodgate_rs-0.1.3-cp38-none-win_amd64.whl", hash = "sha256:1f3904fc76736dd6b2feea4cb9dfbf84aa25d23f9482e704ba96e80df8f0b5ca"},
+    {file = "floodgate_rs-0.1.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:0eae128cde3efbb34577f43ca48b00331b9c79121bd60bc7ee6a312233d21e02"},
+    {file = "floodgate_rs-0.1.3-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:9af4b381691f367662dd970c74490d32de1aedefde44077e7ace4c1dfcb52c66"},
+    {file = "floodgate_rs-0.1.3-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:a2e229799aea2ca99944f0c3b366069af5c4e84c33f164d247172f487ff6bf37"},
+    {file = "floodgate_rs-0.1.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b8043363ff4c3066232f4581f10be4b5a3452166d12af7550af472fba7501b8f"},
+    {file = "floodgate_rs-0.1.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:28e1f4df87d826beb174122496018caaa0941b7c6a3e6e007ba7c1cd28731c38"},
+    {file = "floodgate_rs-0.1.3-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:a50387c31d903fd205e0c2ff9530a5c3dc1dd46b8deced93dbf657434e833c45"},
+    {file = "floodgate_rs-0.1.3-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:9a6fab310685d2988fcde2adf3d4ea0ee538b7fc326b9a74f8203314b27173ed"},
+    {file = "floodgate_rs-0.1.3-cp39-none-win32.whl", hash = "sha256:7e27ce6fb9ba7e808059aa1f42759a4d82dfa24494afce96c91794b0bb8fa62b"},
+    {file = "floodgate_rs-0.1.3-cp39-none-win_amd64.whl", hash = "sha256:db94ab216f4e147d4be0afc5cea6bdac2b90005dc3b6a24f9dbc8e8bc702ae68"},
+    {file = "floodgate_rs-0.1.3.tar.gz", hash = "sha256:45c5005bf2da7f8096dc32b837d6128926c24c4e6d273dc2c4be024eb74d062e"},
 ]
 
 [[package]]
@@ -1064,4 +1064,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11,<3.12"
-content-hash = "f2b9bceff88852f7158328226198320186149529c5ae669458e2342ee5b2218c"
+content-hash = "0773a10fc7249d7f97150e9ac8889028bfae0aa610e6d7e05f33521e5532d7f1"
