@@ -61,6 +61,7 @@ async def on_message(event: hikari.GuildMessageCreateEvent) -> None:
 
     if not event.content:
         return
+    lowercase_content = event.content.lower()
 
     highlights = (
         await Highlight.fetch_query()
@@ -96,7 +97,7 @@ async def on_message(event: hikari.GuildMessageCreateEvent) -> None:
             if not re.is_match(event.content):
                 continue
         else:
-            if hl.content not in event.content:
+            if hl.content not in event.content and hl.content not in lowercase_content:
                 continue
 
         if not ACTIVE_COOLDOWN.can_trigger((hl.user_id, event.channel_id)):
