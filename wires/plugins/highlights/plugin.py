@@ -111,15 +111,19 @@ async def on_message(event: hikari.GuildMessageCreateEvent) -> None:
         notifications.setdefault(hl.user_id, []).append(clip(hl.content, 12))
 
     guild = unwrap(event.get_guild())
+    footer = guild.name
+    if (source_channel := event.get_channel()) and source_channel.name:
+        footer += f" | {source_channel.name}"
+    embed = (
+        hikari.Embed(
+            title="Jump",
+            description=event.content,
+            url=event.message.make_link(event.guild_id),
+        )
+        .set_footer(footer, icon=guild.icon_url)
+        .set_author(name=event.author.username, icon=event.author.avatar_url)
+    )
+
     for user, triggers in notifications.items():
         channel = await plugin.app.rest.create_dm_channel(user)
-        embed = (
-            hikari.Embed(
-                title="Jump",
-                description=event.content,
-                url=event.message.make_link(event.guild_id),
-            )
-            .set_footer(guild.name, icon=guild.icon_url)
-            .set_author(name=event.author.username, icon=event.author.avatar_url)
-        )
         await channel.send(f"Highlights triggered: {', '.join(triggers)}", embed=embed)
